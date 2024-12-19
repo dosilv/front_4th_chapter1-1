@@ -1,9 +1,9 @@
 import { timeConverter } from "../shared";
 
 const Post = (data) => {
-  const { createdBy, createdAt, content } = data;
+  const { id, createdBy, createdAt, content, isLiked } = data;
 
-  return `<div class="bg-white rounded-lg shadow p-4">
+  return `<div id="post" class="bg-white rounded-lg shadow p-4">
               <div class="flex items-center mb-2">
                 <img src="https://via.placeholder.com/40" alt="프로필" class="rounded-full mr-2">
                 <div>
@@ -13,7 +13,7 @@ const Post = (data) => {
               </div>
               <p>${content}</p>
               <div class="mt-2 flex justify-between text-gray-500">
-                <button>좋아요</button>
+                <button id=${`like-button-${id}`}>${isLiked ? "❤️ " : ""}좋아요</button>
                 <button>댓글</button>
                 <button>공유</button>
               </div>

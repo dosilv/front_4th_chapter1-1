@@ -40,6 +40,11 @@ const MainPage = () => {
     const textarea = document.querySelector("textarea");
     const submitButton = document.querySelector("button");
 
+    textarea.addEventListener("click", () => {
+      if (userService.getUser()?.username) return;
+      alert("로그인 후 작성할 수 있습니다.");
+    });
+
     submitButton.addEventListener("click", (e) => {
       e.preventDefault();
 
@@ -54,12 +59,36 @@ const MainPage = () => {
               createdBy: userService.getUser().username,
               content: textarea.value,
               createdAt: new Date().getTime(),
+              isLiked: false,
             },
           ],
         };
       });
 
       textarea.value = "";
+    });
+
+    postArea.addEventListener("click", (e) => {
+      const { id } = e.target;
+
+      if (!id.startsWith("like-button")) return;
+
+      const targetId = Number(id.split("-").pop());
+
+      store.setState((prev) => {
+        const postList = prev.postList ?? [];
+        return {
+          ...prev,
+          postList: postList.map((post) =>
+            post.id === targetId
+              ? {
+                  ...post,
+                  isLiked: !post.isLiked,
+                }
+              : post,
+          ),
+        };
+      });
     });
 
     store.subscribe((state) => {
